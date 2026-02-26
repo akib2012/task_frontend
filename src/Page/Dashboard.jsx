@@ -1,0 +1,50 @@
+import { AnalyticsSection } from '../components/dashboard_componetns/AnalyticsSection';
+import Header from '../components/dashboard_componetns/Header';
+import { ProjectProgress } from '../components/dashboard_componetns/ProjectProgress';
+import ReminderCard from '../components/dashboard_componetns/ReminderCard';
+import { Sidebar } from '../components/dashboard_componetns/Sidebar';
+import { StatsGrid } from '../components/dashboard_componetns/StatsGrid';
+import { TeamSection } from '../components/dashboard_componetns/TeamSection';
+import { TimeTracker } from '../components/dashboard_componetns/TimeTracker';
+// import StatsGrid from './components/StatsGrid';
+// import AnalyticsSection from './components/AnalyticsSection';
+// import TeamSection from './components/TeamSection';
+
+export default function Dashboard() {
+  return (
+    <div className="flex min-h-screen bg-[#F8F9FA] text-[#1A1A1A] font-sans">
+      <Sidebar />
+      <main className="flex-1 p-8">
+        <Header />
+        <div className="mt-8 grid grid-cols-12 gap-6">
+          {/* Top Stats */}
+          <div className="col-span-12">
+            <StatsGrid />
+          </div>
+          
+          {/* Middle Row */}
+          <div className="col-span-12 lg:col-span-5">
+            <AnalyticsSection />
+          </div>
+          <div className="col-span-12 lg:col-span-3">
+            <ReminderCard />
+          </div>
+          <div className="col-span-12 lg:col-span-4">
+            <ProjectList />
+          </div>
+
+          {/* Bottom Row */}
+          <div className="col-span-12 lg:col-span-6">
+            <TeamSection />
+          </div>
+          <div className="col-span-12 lg:col-span-3">
+            <ProjectProgress />
+          </div>
+          <div className="col-span-12 lg:col-span-3">
+            <TimeTracker />
+          </div>
+        </div>
+      </main>
+    </div>
+  );
+}
