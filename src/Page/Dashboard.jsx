@@ -1,14 +1,13 @@
 import { AnalyticsSection } from '../components/dashboard_componetns/AnalyticsSection';
 import Header from '../components/dashboard_componetns/Header';
+import ProjectList from '../components/dashboard_componetns/ProjectList';
 import { ProjectProgress } from '../components/dashboard_componetns/ProjectProgress';
 import ReminderCard from '../components/dashboard_componetns/ReminderCard';
 import { Sidebar } from '../components/dashboard_componetns/Sidebar';
 import { StatsGrid } from '../components/dashboard_componetns/StatsGrid';
 import { TeamSection } from '../components/dashboard_componetns/TeamSection';
 import { TimeTracker } from '../components/dashboard_componetns/TimeTracker';
-// import StatsGrid from './components/StatsGrid';
-// import AnalyticsSection from './components/AnalyticsSection';
-// import TeamSection from './components/TeamSection';
+
 
 export default function Dashboard() {
   return (
