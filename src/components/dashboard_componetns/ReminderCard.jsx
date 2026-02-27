@@ -1,5 +1,5 @@
-import React from "react";
-import { Video, MoreHorizontal } from "lucide-react";
+import React from 'react';
+import { Video, MoreHorizontal } from 'lucide-react';
 
 export const ReminderCard = () => {
   return (

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
 import { Mail, Lock, Loader2 } from "lucide-react";
+import { useAuth } from "../context/AuthContext"; 
 
 const LoginPage = () => {
   const [email, setEmail] = useState("user1@example.com");
@@ -8,6 +9,7 @@ const LoginPage = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const { login } = useAuth(); 
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -27,9 +29,7 @@ const LoginPage = () => {
       const data = await response.json();
 
       if (response.ok) {
-        // Proper Authentication - Store token securely
-        localStorage.setItem("token", data.token);
-        localStorage.setItem("user", JSON.stringify(data));
+        login(data); 
         navigate("/dashboard");
       } else {
         setError(data.message || "Invalid credentials");
@@ -44,7 +44,6 @@ const LoginPage = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#F8F9FA] p-4 font-sans">
       <div className="max-w-md w-full bg-white rounded-[2.5rem] shadow-sm border border-gray-100 p-10">
-        {/* Logo Section */}
         <div className="flex flex-col items-center mb-10">
           <div className="w-12 h-12 bg-[#0F4C3A] rounded-2xl flex items-center justify-center text-white text-2xl font-bold mb-4">
             D
@@ -56,7 +55,6 @@ const LoginPage = () => {
         </div>
 
         <form onSubmit={handleLogin} className="space-y-6">
-          {/* Email Field */}
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-2">
               Email Address
@@ -76,7 +74,6 @@ const LoginPage = () => {
             </div>
           </div>
 
-          {/* Password Field */}
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-2">
               Password
