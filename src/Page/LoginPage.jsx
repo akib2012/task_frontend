@@ -1,15 +1,16 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
 import { Mail, Lock, Loader2 } from "lucide-react";
-import { useAuth } from "../context/AuthContext"; 
+import { useAuth } from "../context/AuthContext";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("user1@example.com");
   const [password, setPassword] = useState("password123");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
   const navigate = useNavigate();
-  const { login } = useAuth(); 
+  const { login } = useAuth();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -29,7 +30,10 @@ const LoginPage = () => {
       const data = await response.json();
 
       if (response.ok) {
-        login(data); 
+        localStorage.setItem("token", data.token);
+
+        login(data.token);
+
         navigate("/dashboard");
       } else {
         setError(data.message || "Invalid credentials");
