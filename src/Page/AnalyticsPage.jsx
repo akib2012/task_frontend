@@ -5,30 +5,45 @@ import {
   MousePointer2,
   RefreshCcw,
   ArrowUpRight,
-  BarChart,
   Calendar,
 } from "lucide-react";
-
+import Loader from "../components/Loading/Loader";  
 const AnalyticsPage = () => {
   const [stats, setStats] = useState([]);
-  const [timeRange, setTimeRange] = useState("Monthly"); // Functional State
-  const [loading, setLoading] = useState(true);
+  const [timeRange, setTimeRange] = useState("Monthly");
+  const [loading, setLoading] = useState(true);  
 
   useEffect(() => {
-    setLoading(true);
-    fetch("https://task-api-eight-flax.vercel.app/api/analytics")
-      .then((res) => res.json())
-      .then((data) => {
+    const fetchAnalytics = async () => {
+      try {
+        setLoading(true);
+        const res = await fetch(
+          "https://task-api-eight-flax.vercel.app/api/analytics",
+        );
+        const data = await res.json();
         setStats(data);
+      } catch (err) {
+        console.error("Analytics fetch error:", err);
+      } finally {
         setLoading(false);
-      })
-      .catch((err) => console.error("Analytics fetch error:", err));
+      }
+    };
+
+    fetchAnalytics();
   }, []);
 
-  // Filter data based on selection (Logic example)
+  // Filter data based on selection
   const filteredStats = useMemo(() => {
     return timeRange === "Monthly" ? stats.slice(0, 4) : stats;
   }, [stats, timeRange]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Loader />
+      </div>
+    );
+  }
 
   return (
     <motion.div
@@ -48,7 +63,7 @@ const AnalyticsPage = () => {
           </div>
         </div>
 
-        {/* Functional Range Switcher */}
+        {/* Range Switcher */}
         <div className="flex bg-slate-50 border border-slate-100 p-1.5 rounded-[1.2rem] shadow-inner">
           {["Monthly", "Yearly"].map((range) => (
             <button
@@ -75,70 +90,68 @@ const AnalyticsPage = () => {
       {/* Cards Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         <AnimatePresence mode="popLayout">
-          {!loading &&
-            filteredStats.map((day, idx) => (
-              <motion.div
-                key={day.date}
-                layout
-                initial={{ opacity: 0, scale: 0.9, y: 20 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.2 } }}
-                transition={{
-                  type: "spring",
-                  stiffness: 260,
-                  damping: 20,
-                  delay: idx * 0.08,
-                }}
-                whileHover={{ y: -5, shadow: "0 20px 40px rgba(0,0,0,0.08)" }}
-                className="group bg-slate-50/50 p-6 rounded-[2.5rem] border border-slate-100 relative overflow-hidden transition-all"
-              >
-                {/* Decorative Background Glow */}
-                <div className="absolute -top-10 -right-10 w-32 h-32 bg-green-500/5 rounded-full blur-3xl transition-opacity opacity-0 group-hover:opacity-100" />
+          {filteredStats.map((day, idx) => (
+            <motion.div
+              key={day.date}
+              layout
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.2 } }}
+              transition={{
+                type: "spring",
+                stiffness: 260,
+                damping: 20,
+                delay: idx * 0.08,
+              }}
+              whileHover={{ y: -5, shadow: "0 20px 40px rgba(0,0,0,0.08)" }}
+              className="group bg-slate-50/50 p-6 rounded-[2.5rem] border border-slate-100 relative overflow-hidden transition-all"
+            >
+              <div className="absolute -top-10 -right-10 w-32 h-32 bg-green-500/5 rounded-full blur-3xl transition-opacity opacity-0 group-hover:opacity-100" />
 
-                <div className="flex justify-between items-center mb-8">
-                  <div className="flex items-center gap-4">
-                    <div className="w-11 h-11 bg-[#0F4C3A] text-white rounded-2xl flex items-center justify-center shadow-lg shadow-green-900/20 group-hover:rotate-6 transition-transform">
-                      <Calendar size={18} strokeWidth={2.5} />
-                    </div>
-                    <div>
-                      <p className="font-black text-sm text-[#1A1A1A] leading-none">
-                        {day.date}
-                      </p>
-                      <p className="text-[10px] font-bold text-slate-400 mt-1 uppercase tracking-tighter">
-                        Report generated
-                      </p>
-                    </div>
+              <div className="flex justify-between items-center mb-8">
+                <div className="flex items-center gap-4">
+                  <div className="w-11 h-11 bg-[#0F4C3A] text-white rounded-2xl flex items-center justify-center shadow-lg shadow-green-900/20 group-hover:rotate-6 transition-transform">
+                    <Calendar size={18} strokeWidth={2.5} />
                   </div>
-                  <div className="p-2 bg-white rounded-full border border-slate-100 text-emerald-500 shadow-sm group-hover:bg-emerald-500 group-hover:text-white transition-all">
-                    <ArrowUpRight size={16} strokeWidth={3} />
+                  <div>
+                    <p className="font-black text-sm text-[#1A1A1A] leading-none">
+                      {day.date}
+                    </p>
+                    <p className="text-[10px] font-bold text-slate-400 mt-1 uppercase tracking-tighter">
+                      Report generated
+                    </p>
                   </div>
                 </div>
-
-                <div className="grid grid-cols-3 gap-3 bg-white/60 backdrop-blur-sm p-4 rounded-[1.8rem] border border-white">
-                  <StatItem
-                    icon={<Eye />}
-                    label="Views"
-                    value={day.views}
-                    color="text-blue-500"
-                    bgColor="bg-blue-50"
-                  />
-                  <StatItem
-                    icon={<MousePointer2 />}
-                    label="Clicks"
-                    value={day.clicks}
-                    color="text-amber-500"
-                    bgColor="bg-amber-50"
-                  />
-                  <StatItem
-                    icon={<RefreshCcw />}
-                    label="Conv."
-                    value={day.conversions}
-                    color="text-emerald-500"
-                    bgColor="bg-emerald-50"
-                  />
+                <div className="p-2 bg-white rounded-full border border-slate-100 text-emerald-500 shadow-sm group-hover:bg-emerald-500 group-hover:text-white transition-all">
+                  <ArrowUpRight size={16} strokeWidth={3} />
                 </div>
-              </motion.div>
-            ))}
+              </div>
+
+              <div className="grid grid-cols-3 gap-3 bg-white/60 backdrop-blur-sm p-4 rounded-[1.8rem] border border-white">
+                <StatItem
+                  icon={<Eye />}
+                  label="Views"
+                  value={day.views}
+                  color="text-blue-500"
+                  bgColor="bg-blue-50"
+                />
+                <StatItem
+                  icon={<MousePointer2 />}
+                  label="Clicks"
+                  value={day.clicks}
+                  color="text-amber-500"
+                  bgColor="bg-amber-50"
+                />
+                <StatItem
+                  icon={<RefreshCcw />}
+                  label="Conv."
+                  value={day.conversions}
+                  color="text-emerald-500"
+                  bgColor="bg-emerald-50"
+                />
+              </div>
+            </motion.div>
+          ))}
         </AnimatePresence>
       </div>
     </motion.div>

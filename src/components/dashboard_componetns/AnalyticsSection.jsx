@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { MousePointer2, Target, BarChart3, Eye } from "lucide-react";
+import { BarChart3 } from "lucide-react";
 
 export const AnalyticsSection = () => {
   const [data, setData] = useState([]);
@@ -36,7 +36,7 @@ export const AnalyticsSection = () => {
       animate={{ opacity: 1, y: 0 }}
       className="bg-white p-8 rounded-[2.5rem] border border-slate-200 shadow-[0_20px_50px_rgba(0,0,0,0.04)] h-full"
     >
-      {/* Header remain same style */}
+      {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-14">
         <div className="flex items-center gap-4">
           <div className="p-3 bg-[#0F4C3A] rounded-2xl text-white shadow-lg shadow-[#0F4C3A]/20">
@@ -55,7 +55,7 @@ export const AnalyticsSection = () => {
           </div>
         </div>
 
-        {/* Tab Switcher */}
+        {/* Tabs */}
         <div className="flex bg-slate-100 p-1.5 rounded-2xl border border-slate-200 relative">
           {["views", "clicks"].map((tab) => (
             <button
@@ -64,7 +64,7 @@ export const AnalyticsSection = () => {
               className={`relative z-10 px-6 py-2 text-[12px] font-bold rounded-xl transition-all duration-300 ${
                 viewMode === tab
                   ? "text-white"
-                  : "text-slate-400 hover:text-slate-600"
+                  : "text-slate-500 hover:text-slate-700"
               }`}
             >
               <span className="capitalize">{tab}</span>
@@ -80,7 +80,7 @@ export const AnalyticsSection = () => {
         </div>
       </div>
 
-      {/* NEW MODERN COLUMN CHART */}
+      {/* Chart */}
       <div className="flex items-end justify-between h-72 gap-4 sm:gap-8 px-4 border-b border-slate-100 pb-4 relative">
         {activeData.map((item, i) => {
           const isToday = i === activeData.length - 1;
@@ -93,7 +93,7 @@ export const AnalyticsSection = () => {
               onMouseEnter={() => setHoveredIndex(i)}
               onMouseLeave={() => setHoveredIndex(null)}
             >
-              {/* Tooltip logic same as before but deep theme */}
+              {/* Tooltip */}
               <AnimatePresence>
                 {isHovered && (
                   <motion.div
@@ -103,7 +103,7 @@ export const AnalyticsSection = () => {
                     className="absolute -top-28 z-30 min-w-[120px] bg-slate-900 text-white p-3 rounded-2xl shadow-2xl"
                   >
                     <div className="flex flex-col gap-1 text-center">
-                      <span className="text-[10px] text-slate-500 font-bold uppercase tracking-tighter">
+                      <span className="text-[10px] text-slate-400 font-bold uppercase">
                         {item.dayName}
                       </span>
                       <span className="text-sm font-bold text-emerald-400">
@@ -115,11 +115,10 @@ export const AnalyticsSection = () => {
                 )}
               </AnimatePresence>
 
-              {/* THE MODERN COLUMN */}
+              {/* Column */}
               <div className="relative flex items-end justify-center w-full h-full">
-                {/* Column Base Shadow (For depth) */}
                 {isToday && (
-                  <div className="absolute bottom-0 w-full max-w-[40px] h-4 bg-emerald-500/20 blur-xl rounded-full" />
+                  <div className="absolute bottom-0 w-full max-w-[40px] h-4 bg-emerald-500/30 blur-xl rounded-full" />
                 )}
 
                 <motion.div
@@ -130,20 +129,20 @@ export const AnalyticsSection = () => {
                   className={`w-full max-w-[44px] rounded-t-[2rem] rounded-b-xl relative cursor-pointer overflow-hidden shadow-inner transition-all duration-500 ${
                     isToday
                       ? "bg-gradient-to-t from-[#0F4C3A] via-[#14634d] to-[#1da37e] z-10"
-                      : "bg-gradient-to-t from-slate-100 to-slate-50 border border-slate-200/50"
+                      : "bg-gradient-to-t from-slate-300 to-slate-200 border border-slate-300"
                   }`}
                 >
-                  {/* Gloss/Reflective Effect */}
-                  <div className="absolute inset-x-0 top-0 h-[40%] bg-gradient-to-b from-white/20 to-transparent pointer-events-none" />
+                  {/* Gloss */}
+                  <div className="absolute inset-x-0 top-0 h-[40%] bg-gradient-to-b from-white/30 to-transparent" />
 
-                  {/* Inner Highlight line for Premium Look */}
+                  {/* Inner Highlight */}
                   <div
                     className={`absolute top-4 left-1/2 -translate-x-1/2 w-[2px] h-[30%] rounded-full ${
-                      isToday ? "bg-white/30" : "bg-slate-300/40"
+                      isToday ? "bg-white/40" : "bg-slate-400/60"
                     }`}
                   />
 
-                  {/* Hover Overlay */}
+                  {/* Hover overlay */}
                   <motion.div
                     animate={{ opacity: isHovered ? 1 : 0 }}
                     className="absolute inset-0 bg-white/10"
@@ -151,10 +150,10 @@ export const AnalyticsSection = () => {
                 </motion.div>
               </div>
 
-              {/* Label with dynamic weight */}
+              {/* Label */}
               <span
                 className={`mt-6 text-[11px] font-black tracking-widest transition-all duration-300 ${
-                  isHovered || isToday ? "text-[#0F4C3A]" : "text-slate-300"
+                  isHovered || isToday ? "text-[#0F4C3A]" : "text-slate-500"
                 }`}
               >
                 {item.dayName.toUpperCase()}

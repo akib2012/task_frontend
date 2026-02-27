@@ -1,21 +1,47 @@
-import React, { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
-import { Briefcase, Tag, DollarSign, TrendingUp, ChevronRight } from 'lucide-react';
+import React, { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import { Briefcase, Tag, ChevronRight } from "lucide-react";
+import Loader from "../components/Loading/Loader";
 
 const ProjectsPage = () => {
   const [projects, setProjects] = useState([]);
-
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
-    fetch("https://task-api-eight-flax.vercel.app/api/products")
-      .then(res => res.json())
-      .then(data => setProjects(data));
+    const fetchProjects = async () => {
+      try {
+        setLoading(true);
+        const res = await fetch(
+          "https://task-api-eight-flax.vercel.app/api/products",
+        );
+        const data = await res.json();
+        setProjects(data);
+      } catch (err) {
+        console.error("Project fetch error:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProjects();
   }, []);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Loader />
+      </div>
+    );
+  }
 
   return (
     <div className="p-8 max-w-7xl mx-auto space-y-8">
       <header>
-        <h1 className="text-3xl font-black text-slate-900 tracking-tight">Active Projects</h1>
-        <p className="text-slate-500 font-medium mt-1">Manage and track your product subscriptions.</p>
+        <h1 className="text-3xl font-black text-slate-900 tracking-tight">
+          Active Projects
+        </h1>
+        <p className="text-slate-500 font-medium mt-1">
+          Manage and track your product subscriptions.
+        </p>
       </header>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -37,24 +63,36 @@ const ProjectsPage = () => {
               </span>
             </div>
 
-            <h3 className="text-xl font-bold text-slate-900 mb-2">{item.name}</h3>
-            
+            <h3 className="text-xl font-bold text-slate-900 mb-2">
+              {item.name}
+            </h3>
+
             <div className="flex items-center gap-2 mb-6">
               <Tag size={14} className="text-emerald-500" />
-              <span className="text-xs font-bold text-slate-400 uppercase tracking-tighter">{item.category}</span>
+              <span className="text-xs font-bold text-slate-400 uppercase tracking-tighter">
+                {item.category}
+              </span>
             </div>
 
             <div className="grid grid-cols-2 gap-4 border-t border-slate-50 pt-6">
               <div>
-                <p className="text-[10px] font-bold text-slate-400 uppercase">Revenue</p>
-                <p className="text-lg font-black text-slate-900">${item.price}</p>
+                <p className="text-[10px] font-bold text-slate-400 uppercase">
+                  Revenue
+                </p>
+                <p className="text-lg font-black text-slate-900">
+                  ${item.price}
+                </p>
               </div>
               <div>
-                <p className="text-[10px] font-bold text-slate-400 uppercase">Total Sales</p>
-                <p className="text-lg font-black text-emerald-600">{item.sales}</p>
+                <p className="text-[10px] font-bold text-slate-400 uppercase">
+                  Total Sales
+                </p>
+                <p className="text-lg font-black text-emerald-600">
+                  {item.sales}
+                </p>
               </div>
             </div>
-            
+
             <button className="w-full mt-6 py-3 bg-slate-50 group-hover:bg-[#0F4C3A] group-hover:text-white rounded-2xl text-xs font-black transition-all flex items-center justify-center gap-2">
               View Analytics <ChevronRight size={14} />
             </button>
@@ -64,6 +102,5 @@ const ProjectsPage = () => {
     </div>
   );
 };
-
 
 export default ProjectsPage;

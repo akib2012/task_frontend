@@ -27,7 +27,7 @@ export const Sidebar = ({ mobileOpen = false, onClose = () => {} }) => {
     },
     {
       icon: <Users size={18} />,
-      label: "Team",
+      label: "Users",
       badge: "8k",
       path: "/dashboard/team",
     },

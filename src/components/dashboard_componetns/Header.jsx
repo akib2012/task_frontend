@@ -1,11 +1,41 @@
 import { useNavigate } from "react-router";
 import { useAuth } from "../../context/AuthContext";
 import { Search, Bell, Mail, Command, Menu, LogOut } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 
 const Header = ({ onOpenSidebar }) => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+
+  const [searchTerm, setSearchTerm] = useState("");
+  const [users, setUsers] = useState([]);
+  const [filteredUsers, setFilteredUsers] = useState([]);
+
+  // Fetch dashboard data
+  useEffect(() => {
+    fetch("https://task-api-eight-flax.vercel.app/api/dashboard")
+      .then((res) => res.json())
+      .then((data) => {
+        setUsers(data.users || []);
+      })
+      .catch((err) => console.error("Dashboard fetch error:", err));
+  }, []);
+
+  // Filter users by name
+  useEffect(() => {
+    if (!searchTerm) {
+      setFilteredUsers([]);
+      return;
+    }
+
+    const results = users.filter((user) =>
+      user.name.toLowerCase().includes(searchTerm.toLowerCase()),
+    );
+
+    setFilteredUsers(results);
+    console.log("Search Result:", results);
+  }, [searchTerm, users]);
 
   const handleLogout = () => {
     logout();
@@ -28,7 +58,7 @@ const Header = ({ onOpenSidebar }) => {
           <Menu size={20} />
         </motion.button>
 
-        {/* Search Bar Container */}
+        {/* Search Bar */}
         <div className="relative flex-1 max-w-md group">
           <motion.div
             className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#0F4C3A]"
@@ -38,9 +68,27 @@ const Header = ({ onOpenSidebar }) => {
           </motion.div>
           <input
             type="text"
-            placeholder="Search anything..."
+            placeholder="Search by user name..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
             className="w-full bg-gray-50/50 pl-12 pr-12 py-2.5 rounded-2xl outline-none border border-transparent focus:border-[#0F4C3A]/20 focus:bg-white focus:shadow-sm text-sm transition-all duration-300"
           />
+
+          {/* Search Result Dropdown */}
+          {searchTerm && filteredUsers.length > 0 && (
+            <div className="absolute top-full mt-2 w-full bg-white rounded-xl shadow-lg border border-gray-100 max-h-60 overflow-y-auto z-50">
+              {filteredUsers.map((u) => (
+                <div
+                  key={u.id}
+                  className="px-4 py-2 text-sm hover:bg-gray-50 cursor-pointer"
+                >
+                  <p className="font-medium">{u.name}</p>
+                  <p className="text-xs text-gray-400">{u.email}</p>
+                </div>
+              ))}
+            </div>
+          )}
+
           <div className="absolute right-4 top-1/2 -translate-y-1/2 hidden sm:flex items-center gap-1.5 px-2 py-1 bg-white border border-gray-100 rounded-lg shadow-sm text-[10px] text-gray-400 font-medium">
             <Command size={10} /> <span>K</span>
           </div>

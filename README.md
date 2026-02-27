@@ -6,14 +6,13 @@ The application includes a **Login Page** and a **Dashboard Page** integrated wi
 ---
 
 ## 🚀 Live Demo
-👉 *(Add your deployed link here)*  
-Example: https://your-app.vercel.app
+👉 
+
 
 ---
 
 ## 📂 GitHub Repository
-👉 *(This repository contains the full source code)*
-
+👉 https://github.com/akib2012/task_frontend.git
 ---
 
 ## 🛠️ Tech Stack
@@ -69,12 +68,9 @@ src/
  └── main.jsx
 
 
-
-
-
 ----
 
-### ⚙️ Setup Instructions
+⚙️ Setup Instructions
 
 Clone the repository:
 
@@ -96,7 +92,7 @@ Email: user1@example.com
 Password: password123
 
 ----
-### API Reference
+API Reference
 
 Login:
 POST https://task-api-eight-flax.vercel.app/api/login
@@ -104,7 +100,7 @@ POST https://task-api-eight-flax.vercel.app/api/login
 Analytics & Dashboard Data:
 GET https://task-api-eight-flax.vercel.app/api/analytics
 
-### Notes
+Notes
 
 Token-based authentication is implemented.
 
@@ -114,7 +110,7 @@ UI closely follows the provided design reference.
 
 The project is deployed and publicly accessible.
 ---
-### Author
+Author
 
 Md. Perbej Bhuiyan Akib
 CSE Graduate | Frontend Developer
