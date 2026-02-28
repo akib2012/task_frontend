@@ -30,7 +30,9 @@ const Router = createBrowserRouter([
       { path: "team", element: <UsersPage></UsersPage> },
 
       {
-        path: "/dashboard/analytics",
+        // make analytics route relative so it remains nested under the
+        // private parent and cannot be accessed directly without auth
+        path: "analytics",
         element: <AnalyticsPage></AnalyticsPage>,
       },
     ],

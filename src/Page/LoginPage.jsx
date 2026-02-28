@@ -30,9 +30,11 @@ const LoginPage = () => {
       const data = await response.json();
 
       if (response.ok) {
+        // save token in localStorage and update context properly
+        // the `login` helper expects the full user object with a token
         localStorage.setItem("token", data.token);
 
-        login(data.token);
+        login(data); // pass the whole response so context.user and context.token are set
 
         navigate("/dashboard");
       } else {
